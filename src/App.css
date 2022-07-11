@@ -14,7 +14,7 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  /* background-color: #282c34; */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -35,4 +35,50 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+
+.blocks{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.block{
+  background-color: #fff;
+  margin: 20px;
+  border-radius: 20px;
+  color: green;
+  padding: 20px;
+}
+
+
+.block >img{
+  height: 200px;
+  width: auto;
+}
+
+.emp :hover{
+cursor: pointer;
+}
+
+
+.registertitle{
+  font-family: serif;
+  display: flex;
+  background-color: #fff;
+  width: max-content;
+  border-radius: 10px;
+  padding: 0px 20px;
+  align-items: center;
+  margin: 10px;
+  justify-content: space-between;
+}
+
+.registertitle > img{
+  height: 50px;
+}
+
+.registertitle:hover{
+  cursor: pointer;
+  box-shadow: rgba(142, 196, 200, 0.368) 10px 0px 20px;
 }

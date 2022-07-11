@@ -1,0 +1,63 @@
+.all{
+    background-color: rgb(2, 47, 69);
+    width: max-content;
+    position: fixed;
+    height: 100vh;
+    padding: 20px;
+}
+
+.menuitems{
+    margin-top: 100px;
+}
+
+.all > img{
+    height: 200px;
+    margin-bottom: auto;
+    border-radius: 20px;
+
+}
+
+.rightbody{
+    padding: 10px;
+    padding-left: 300px;
+
+}
+.rightbody > h1 {
+    color: rgb(1, 17, 63);
+font-family: serif;
+border-bottom: 1px solid #000;
+}
+.dash_blocks{
+    display: flex;
+    flex-wrap: wrap;
+
+}
+
+.dash_card > img{
+    height: 150px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.dash_card{
+    padding: 20px;
+    margin: 10px;
+    font-family: serif;
+    border-radius: 10px;
+    transition: 0.2s ease-in-out;
+}
+
+.dash_card:hover{
+    background-color: #fff;
+    cursor: pointer;
+}
+
+form{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.formgroup{
+    width: 250px;
+    margin: 10px;
+}
