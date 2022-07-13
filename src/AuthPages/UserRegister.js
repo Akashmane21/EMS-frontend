@@ -1,33 +1,37 @@
-import React from 'react'
+import React , { useEffect} from 'react'
 import Navbar from '../comps/Navbar'
 import axios from "axios";
+import { Formik, Field, Form } from "formik";
+import { useCounter } from "../ContextDB/Context";
 
 export default function UserRegister() {
 
-    function AddUser(){
-        var Username = document.getElementById("Username").value;
-        var Password = document.getElementById("Password").value;
-        var Phone = document.getElementById("Phone").value;
-        var Type = "User";
-        var Email = document.getElementById("Email").value;
-        const data ={Username , Password , Phone , Email , Type}
-        console.log(data);
+    const { baseUrl} =useCounter()
+
+
+ 
+
+    function Submit(values){
+        console.log(values);
+        console.log(`${baseUrl}/Users/`);
         axios
-        .post("https://localhost:44362/api/Auth/", data)
+        .post(`${baseUrl}/Users/`, values)
         .then((response) => {
-          alert(response.data);
-          window.location.replace('/Login')
+          alert("User Registered Successfully");
+          console.log(response.data);
+          window.location.replace('/UserLogin')
         })
         .then((err) => {
           console.log(err);
         });
+
     }
     
   return (
     <>
+<Navbar />
     <div className='m-4'>
      
-
     
     <center>
     <div className="registertitle">
@@ -41,32 +45,39 @@ export default function UserRegister() {
 <div class="row">
     <div class="col-md-4 ">
         {/* <form > */}
-        <div class="form-group">
-                <label for="Username" class="control-label">Username</label>
-                <input id="Username" class="form-control" />
+
+        <Formik
+            initialValues={{  }}
+        onSubmit={async (values) => {
+          await new Promise((resolve) => setTimeout(resolve, 500));
+          Submit(values)
+        }}
+      >
+        <Form>
+        <div class="formgroup">
+        <label htmlFor="user_Name">Name</label>
+          <Field required={true} name="user_Name" class="form-control" type="text" />
+          </div>
+
+          <div class="formgroup">
+        <label htmlFor="user_email">Email</label>
+          <Field required={true} name="user_email" class="form-control" type="email" />
+          </div>
+
+
+          <div class="formgroup">
+                <label for="password" class="control-label">Password</label>
+          <Field required={true}  name="password" type="password" class="form-control"  />
             </div>
-        
-            <div class="form-group ">
-                <label for="Email" class="control-label">Email</label>
-                <input id="Email" type="email" class="form-control" />
-            </div>
-            <div class="form-group">
-                <label for="Email" class="control-label">Confirm Email</label>
-                <input id="Email" type="email" class="form-control" />
-            </div>
-            <div class="form-group">
-                <label for="Password" class="control-label">Password</label>
-                <input id="Password" type="password" class="form-control" />
-            </div>
-            <div class="form-group">
-                <label for="Password" class="control-label"> Confirm Password</label>
-                <input id="Password" type="password" class="form-control" />
-            </div>
-           
-            <br />
-            <div class="form-group">
-                <a class="btn btn-primary" onClick={AddUser} > Register Now </a>
-            </div>
+
+
+            <div class="formgroup">
+          <button class="btn btn-primary" type="submit">Register</button>
+          </div>
+        </Form>
+      </Formik>
+
+      
             <br />
             <br />
             <h5>Already existing user ? <a href="/UserLogin">login</a></h5>

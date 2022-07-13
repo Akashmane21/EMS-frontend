@@ -1,27 +1,32 @@
-import React from 'react'
 import Navbar from '../comps/Navbar'
 import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import React , { useEffect} from 'react'
+import { Formik, Field, Form } from "formik";
 
-
+import { useCounter } from "../ContextDB/Context";
+   
 export default function AdminLogin() {
+  const { baseUrl} =useCounter()
 
-  function login(){
-    var Username = document.getElementById("Username").value;
-    var Password = document.getElementById("Password").value;
-   
-   
+
+
+  function login(values){
+ 
     axios
-    .get("https://localhost:44362/api/Auth/")
+    .get(`${baseUrl}/Admins`)
     .then((response) => {
       const Data = response.data;
-      const user = Data.find(e => e.username==Username)
+      console.log(Data);
+      const user = Data.find(e => e.admin_Name==values.admin_Name)
+      console.log(user);
+
       if(user!=undefined){
-        if(user.password==Password){
+        if(user.password==values.password){
           toast("Welcome");
           localStorage.setItem("Auth" , "true")
-          window.location.replace('/')
+          window.location.replace('/Admin_Dashboard')
           localStorage.setItem("Userinfo" , JSON.stringify(user))
 
         }else{
@@ -38,7 +43,7 @@ export default function AdminLogin() {
 }
   return (
     <>
- 
+ <Navbar />
 <div className='m-4'>
    
 <center>
@@ -53,20 +58,34 @@ export default function AdminLogin() {
 <hr />
 <div class="row">
 <div class="col-md-3    ">
-    {/* <form> */}
-        <div class="form-group">
-            <label for="Username" class="control-label">Username</label>
-            <input id="Username" class="form-control" />
-        </div>
-        <div class="form-group">
-            <label for="Password" class="control-label">Password</label>
-            <input id="Password" type="password" class="form-control" />
-        </div>
-       
-       <br /><br />
-        <div class="form-group">
-            <a class="btn btn-primary" onClick={login} > Login </a>
-        </div>
+
+<Formik
+            initialValues={{  }}
+        onSubmit={async (values) => {
+          await new Promise((resolve) => setTimeout(resolve, 500));
+          login(values)
+        }}
+      >
+        <Form>
+        <div class="formgroup">
+        <label htmlFor="admin_Name">Name</label>
+          <Field required={true} name="admin_Name" class="form-control" type="text" />
+          </div>
+
+
+          <div class="formgroup">
+                <label for="password" class="control-label">Password</label>
+          <Field required={true}  name="password" class="form-control" type="password" />
+            </div>
+
+
+            <div class="formgroup">
+          <button class="btn btn-primary" type="submit">Login</button>
+          </div>
+        </Form>
+      </Formik>
+
+
         <br />
             <h5>New User ? <a href="/AdminRegister">Register</a></h5>
     {/* </form> */}

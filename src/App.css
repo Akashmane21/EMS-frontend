@@ -49,12 +49,16 @@
   border-radius: 20px;
   color: green;
   padding: 20px;
+  display: flex;
+  align-items: center;
+  width: 300px;
 }
 
 
 .block >img{
-  height: 200px;
+  height: 100px;
   width: auto;
+  margin-right: 20px;
 }
 
 .emp :hover{

@@ -1,47 +1,31 @@
 import React , { useEffect} from 'react'
 import Navbar from '../comps/Navbar'
 import axios from "axios";
+import { Formik, Field, Form } from "formik";
 
+import { useCounter } from "../ContextDB/Context";
 export default function AdminRegister() {
+    const { baseUrl} =useCounter()
 
-    useEffect(() => {
-        if(localStorage.getItem("Auth")==null){
-            alert("You must have to login first")
-            window.location.replace(`/Login`);
-          }
-          else{
-            const userdata = JSON.parse(localStorage.getItem("Userinfo"))
-            if(userdata.type!="Admin"){
-              alert("You are not Admin")
-              window.location.replace(`/`);
-            }
-            }
 
-    }, [])
-    
+   
 
-    function AddUser(){
-        var Username = document.getElementById("Username").value;
-        var Password = document.getElementById("Password").value;
-        var Phone = document.getElementById("Phone").value;
-        var Type = "Admin";
-        var Email = document.getElementById("Email").value;
-        const data ={Username , Password , Phone , Email , Type}
-        console.log(data);
+    function Submit(values){
         axios
-        .post("https://localhost:44362/api/Auth/", data)
+        .post(`${baseUrl}/Admins/`, values)
         .then((response) => {
-          alert(response.data);
-          window.location.replace('/Login')
+          alert("Admin Registered Successfully");
+          window.location.replace('/AdminLogin')
         })
         .then((err) => {
           console.log(err);
         });
+
     }
     
   return (
     <>
-        {/* <Navbar /> */}
+        <Navbar />
     <div className='m-4'>
      
 <center>
@@ -55,33 +39,41 @@ export default function AdminRegister() {
 <hr />
 <div class="row">
     <div class="col-md-4">
-        {/* <form > */}
-            <div class="form-group">
-                <label for="Username" class="control-label">Username</label>
-                <input id="Username" class="form-control" />
+
+    <Formik
+            initialValues={{  }}
+        onSubmit={async (values) => {
+          await new Promise((resolve) => setTimeout(resolve, 500));
+          Submit(values)
+        }}
+      >
+        <Form>
+        <div class="formgroup">
+        <label htmlFor="admin_Name">Name</label>
+          <Field required={true} name="admin_Name" class="form-control" type="text" />
+          </div>
+
+          <div class="formgroup">
+        <label htmlFor="admin_email">Email</label>
+          <Field required={true} name="admin_email" class="form-control" type="text" />
+          </div>
+
+
+          <div class="formgroup">
+                <label for="password" class="control-label">Password</label>
+          <Field required={true}  name="password" class="form-control" type="text" />
             </div>
-        
-            <div class="form-group ">
-                <label for="Email" class="control-label">Email</label>
-                <input id="Email" type="email" class="form-control" />
-            </div>
-            <div class="form-group">
-                <label for="Email" class="control-label">Confirm Email</label>
-                <input id="Email" type="email" class="form-control" />
-            </div>
-            <div class="form-group">
-                <label for="Password" class="control-label">Password</label>
-                <input id="Password" type="password" class="form-control" />
-            </div>
-            <div class="form-group">
-                <label for="Password" class="control-label"> Confirm Password</label>
-                <input id="Password" type="password" class="form-control" />
-            </div>
-           
-            <br />
-            <div class="form-group">
-                <a class="btn btn-primary" onClick={AddUser} > Register Now </a>
-            </div>
+
+
+            <div class="formgroup">
+          <button class="btn btn-primary" type="submit">Register</button>
+          </div>
+        </Form>
+      </Formik>
+
+
+
+
             <br />
             <br />
             <h5>Already existing user ? <a href="/AdminLogin">login</a></h5>

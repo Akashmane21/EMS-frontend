@@ -1,51 +1,83 @@
-import React from 'react'
-import Navbar from '../comps/Navbar'
-import axios from "axios";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 
-export default function Login() {
-
-  function login(){
-    var Username = document.getElementById("Username").value;
-    var Password = document.getElementById("Password").value;
+  import Navbar from '../comps/Navbar'
+  import axios from "axios";
+  import { ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
+  import React , { useEffect} from 'react'
+  import { Formik, Field, Form } from "formik";
+  
+  import { useCounter } from "../ContextDB/Context";
+     
+  export default function Login() {
+    const { baseUrl} =useCounter()
+  
+  
+  
+    function login(values){
    
-   
-    axios
-    .get("https://localhost:44362/api/Auth/")
-    .then((response) => {
-      const Data = response.data;
-      const user = Data.find(e => e.username==Username)
-      if(user!=undefined){
-        if(user.password==Password){
-          toast("Welcome");
-          localStorage.setItem("Auth" , "true")
-          window.location.replace('/')
-          localStorage.setItem("Userinfo" , JSON.stringify(user))
+      axios
+      .get(`${baseUrl}/Users`)
+      .then((response) => {
+        const Data = response.data;
+        console.log(Data);
+        const user = Data.find(e => e.user_Name==values.user_Name)
+        console.log(user);
+  
+        if(user!=undefined){
+          if(user.password==values.password){
 
-        }else{
-          toast("Wrong Password")
+            axios
+            .get(`${baseUrl}/Employees`)
+            .then((response) => {
+              const Data = response.data;
+              const allemps = response.data.filter((e)=> e.user_Name == values.user_Name )
+              console.log(Data);
+              console.log(allemps);
+
+              if(allemps.length !=0){
+                toast("Welcome");
+                localStorage.setItem("Auth" , "true")
+                localStorage.setItem("Userinfo" , JSON.stringify(user))
+                localStorage.setItem("Empinfo" , JSON.stringify(allemps[0]))
+                window.location.replace('/Employee_Dashboard')
+              }
+              else{
+            toast("You are not an Employee yet , Contact with an Admin");
+
+              }
+
+              
+            
+            })
+            .then((err) => {
+              console.log(err);
+            });
+
+
+  
+          }else{
+            toast("Wrong Password")
+          }
         }
-      }
-      else{
-        toast("Invalid Credentials");
-      }
-    })
-    .then((err) => {
-      console.log(err);
-    });
-}
+        else{
+          toast("Invalid Credentials");
+        }
+      })
+      .then((err) => {
+        console.log(err);
+      });
+  }
   return (
     <>
-   
+   <Navbar />
 <div className='m-4'>
  
 <center>
     <div className="registertitle">
 
 <img src="https://tse1.mm.bing.net/th/id/OIP.3a-B5elyG2BjaTpvVV2hhgHaHa?pid=ImgDet&rs=1" alt="" />
-<h1>Employee Registeration</h1>
+<h1>Employee Login</h1>
     </div>
 
 </center>
@@ -53,20 +85,33 @@ export default function Login() {
 <hr />
 <div class="row">
 <div class="col-md-4    ">
-    {/* <form > */}
-        <div class="form-group">
-            <label for="Username" class="control-label">Username</label>
-            <input id="Username" class="form-control" />
-        </div>
-        <div class="form-group">
-            <label for="Password" class="control-label">Password</label>
-            <input id="Password" type="password" class="form-control" />
-        </div>
-       
-        <br />
-        <div class="form-group">
-            <a class="btn btn-primary" onClick={login} > Login </a>
-        </div>
+    
+<Formik
+            initialValues={{  }}
+        onSubmit={async (values) => {
+          await new Promise((resolve) => setTimeout(resolve, 500));
+          login(values)
+        }}
+      >
+        <Form>
+        <div class="formgroup">
+        <label htmlFor="user_Name">Name</label>
+          <Field required={true} name="user_Name" class="form-control" type="text" />
+          </div>
+
+
+          <div class="formgroup">
+                <label for="password" class="control-label">Password</label>
+          <Field required={true}  name="password" class="form-control" type="password" />
+            </div>
+
+
+            <div class="formgroup">
+          <button class="btn btn-primary" type="submit">Login</button>
+          </div>
+        </Form>
+      </Formik>
+
         <br />
             <br />
             <h5>New User ? <a href="/UserRegister">Register</a></h5>

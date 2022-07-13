@@ -47,6 +47,7 @@ body {
 
 header {
   box-shadow: #8fdde9c5 6px 6px 10px;
+  background-color: orangered;
 }
 
 .material-icons {
@@ -253,4 +254,22 @@ a:hover{
 #root > div > div:nth-child(1) > header > nav > div > div > ul > li:nth-child(4) > a:hover{
   
   color: #007fff;
+}
+
+.intro{
+  width: 50%;
+  text-align: left;
+  padding: 40px;
+}
+
+.intro > h1{
+  font-family: serif;
+  margin-bottom: 40px;
+}
+
+
+
+ ul{
+display: flex;
+list-style:none ;
 }

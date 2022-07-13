@@ -1,139 +1,109 @@
-import React from 'react'
+import React , {useEffect , useState } from 'react'
 import Menu from './Menu'
-
+import axios from "axios";
+import { Formik, Field, Form } from "formik";
+import { useCounter } from "../ContextDB/Context";
+import BredNav from './BredNav';
 export default function Manage_emp() {
+    const { baseUrl} =useCounter()
+    const [Data, setData] = useState([])
+
+
+    useEffect(() => {
+     axios
+    .get(`${baseUrl}/Employees`)
+    .then((response) => {
+        console.log(response.data);
+        setData(response.data)
+    })
+    .then((err) => {
+      console.log(err);
+    });
+    }, [])
+
+
+    function Edit(id){
+      window.location.replace(`/Update_emp_det/${id}`)
+    }
+
+    function Delete (id){
+        const base = `${baseUrl}/Employees/`
+        axios
+        .delete(`${base}${id}`)
+        .then(() => {
+         alert("Deleted Successfully")
+        });
+    }
+    function Details(id){
+        window.location.replace(`/Emp_Details/${id}`)
+
+    }
+
   return (
     <div>
       
                   <Menu />
             <div className="rightbody" >
+                <BredNav name="Manage Employee" />
             <h1>Manage Employee - Admin</h1>
 
             <div className="bthns">
-                <a className='btn m-3'>
+                <a className='btn m-3' href='/Add_Emp'>
                     Add
                 </a>
-                <a href='Update_sal_det' className='btn m-3'>
-                    Update
+                <a className='btn m-3' href='/Manage_sal_det'>
+                    Add salary details for Employee
                 </a>
-                <a className='btn m-3'>
-                    Delete
-                </a>
+              
             </div>
 
-            <form action="" >
+            {/* <form action="" >
             <div class="formgroup">
-                <label htmlFor="First Name">First Name</label>
-                <input  required id="Fname" class="form-control" />
+            <input type="text" placeholder='Search Employee Details' className='form-control' />
+
+                </div>
+
+
+                <div class="formgroup">
+            <input type="text" placeholder='Search by Name' className='form-control' />
+
                 </div>
 
                 <div class="formgroup">
-                <label for="Middle Name" class="control-label">Middle Name</label>
-                <input required id="Mname" class="form-control" />
-            </div>
+            <input type="text" placeholder='Search by Phone no.' className='form-control' />
 
-            <div class="formgroup">
-                <label for="Last Name" class="control-label">Last Name</label>
-                <input required id="Lname" class="form-control" />
-            </div>
-
-            <div class="formgroup">
-                <label for="DOB" class="control-label">DOB</label>
-                <input required id="Lname" type="date" class="form-control" />
-            </div>
-
-            <div class="formgroup">
-                <label for="Phone no." class="control-label">Phone no.</label>
-                <input required id="Lname" type="number" class="form-control" />
-            </div>
-
-            <div class="formgroup">
-                <label for="Email id" class="control-label">Email id</label>
-                <input required id="Lname" type="email" class="form-control" />
-            </div>
-
-            <div class="formgroup">
-                <label for="PAN no." class="control-label">PAN no.</label>
-                <input required id="Lname"  class="form-control" />
-            </div>
-
-            <div class="formgroup">
-                <label for="DOJ" class="control-label">DOJ</label>
-                <input required id="Lname" type="date" class="form-control" />
-            </div>
-
-            <div class="formgroup">
-                <label for="Address" class="control-label">Address</label>
-                <input required id="Lname" class="form-control" />
-            </div>
-
-            <div class="formgroup">
-                <label for="Street name" class="control-label">Street name</label>
-                <input required id="Lname"  class="form-control" />
-            </div>
-
-            <div class="formgroup">
-                <label for="City" class="control-label">City</label>
-                <input required id="Lname" class="form-control" />
-            </div>
-
-            <div class="formgroup">
-                <label for="State" class="control-label">State</label>
-                <input required id="Lname" class="form-control" />
-            </div>
-
-            <div class="formgroup">
-                <label for="Bank Name" class="control-label">Bank Name</label>
-                <input required id="Lname"  class="form-control" />
-            </div>
-
-            <div class="formgroup">
-                <label for="Account no." class="control-label">Account no.</label>
-                <input required id="Lname" class="form-control" />
-            </div>
-
-            <div class="formgroup">
-                <label for="IFSC" class="control-label">IFSC</label>
-                <input required id="Lname" class="form-control" />
-            </div>
-
-            <div class="formgroup">
-            <label for="Skills">Skills</label>
-
-<select id="Skills" class="form-control">
-  <option value="1 - Sql">1 - Sql</option>
-  
-</select>
-
-</div>
+                </div>
 
 
-<div class="formgroup">
-            <label for="Qualification">Qualification</label>
-
-<select id="Qualification" class="form-control">
-<option value="1 - BE">1 - Sql</option>
-
-</select>
-
-</div>
-
-
-<div class="formgroup">
-            <label for="Department">Department</label>
-
-<select id="Department" class="form-control">
-<option value="1 - IT">1 - IT</option>
-
-</select>
-
-</div>
-<br />
-<br />
-<div class="formgroup">
-                <button type='submit' class="btn btn-primary"  > Submit </button>
-            </div>
-            </form>
+                </form> */}
+<table class="table"> 
+            <thead>
+    <tr>
+      <th scope="col">Employee Id</th>
+      <th scope="col">First Name</th>
+      <th scope="col">Last Name</th>
+      <th scope="col">Email</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+  {Data &&
+            Data.map((data, key) => (
+             
+    <tr key={key}>
+      <th scope="row">{data.employee_Id}</th>
+      <td>{data.fname}</td>
+      <td>{data.lname}</td>
+      <td>{data.email_Id}</td>
+      <td><a  onClick={()=>Edit(data.employee_Id)}> Edit </a>  | 
+      <a  onClick={()=>Delete(data.employee_Id)}> Delete </a> |
+      <a  onClick={()=>Details(data.employee_Id)}> View details </a> </td>
+    </tr>
+            ))}
+   
+   
+  </tbody>
+</table>
 
 
             </div>
