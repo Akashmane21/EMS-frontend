@@ -25,7 +25,9 @@ const [Data, setData] = useState([])
     
 
     
-
+function ViewDetails(id){
+window.location.replace(`/Salary_details/${id}`)
+}
     
    
   return (
@@ -62,7 +64,7 @@ const [Data, setData] = useState([])
       <td>{data.basic_Pay}</td>
       <td>{data.gross_Salary}</td>
       <td>{data.net_Salary}</td>
-      <td> <a href="/Salary_details">View details</a> </td>
+      <td> <a onClick={()=> ViewDetails(data.salary_Id)}>View details</a> </td>
       
     </tr>
             ))}

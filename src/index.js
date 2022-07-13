@@ -26,6 +26,7 @@ import Emp_Qualification from "./EmployeeDashboard/Emp_Qualification";
 import Emp_Skills from "./EmployeeDashboard/Emp_Skills";
 
 import GlobaldataProider from "./ContextDB/Context"
+import Salary_details from "./EmployeeDashboard/Salary_details";
 
 
 
@@ -49,6 +50,7 @@ export default function App() {
          <Route path="/Emp_Dependents" element={<Emp_Dependents />} />
          <Route path="/Emp_Payslips" element={<Emp_Payslips />} />
          <Route path="/Emp_Departments" element={<Emp_Departments />} />
+         <Route path="/Salary_details/:id" element={<Salary_details />} />
 
 
 
