@@ -55,13 +55,13 @@ export default function AdminRegister() {
 
           <div class="formgroup">
         <label htmlFor="admin_email">Email</label>
-          <Field required={true} name="admin_email" class="form-control" type="text" />
+          <Field required={true} name="admin_email" class="form-control" type="email" />
           </div>
 
 
           <div class="formgroup">
                 <label for="password" class="control-label">Password</label>
-          <Field required={true}  name="password" class="form-control" type="text" />
+          <Field required={true}  name="password" class="form-control" type="password" />
             </div>
 
 

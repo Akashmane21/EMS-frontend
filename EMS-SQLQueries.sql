@@ -39,7 +39,6 @@ create table Admins(
 )
 
 
-
 create table Employee(
 	Employee_Id int  IDENTITY(1,1) NOT NULL primary key,
 	Fname varchar(30) not null,

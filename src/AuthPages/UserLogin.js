@@ -19,6 +19,7 @@
       axios
       .get(`${baseUrl}/Users`)
       .then((response) => {
+
         const Data = response.data;
         console.log(Data);
         const user = Data.find(e => e.user_Name==values.user_Name)
@@ -32,6 +33,7 @@
             .then((response) => {
               const Data = response.data;
               const allemps = response.data.filter((e)=> e.user_Name == values.user_Name )
+
               console.log(Data);
               console.log(allemps);
 
@@ -43,6 +45,7 @@
                 window.location.replace('/Employee_Dashboard')
               }
               else{
+                
             toast("You are not an Employee yet , Contact with an Admin");
 
               }

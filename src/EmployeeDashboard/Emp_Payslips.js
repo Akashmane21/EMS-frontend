@@ -62,7 +62,7 @@ const [Data, setData] = useState([])
       <td>{data.basic_Pay}</td>
       <td>{data.gross_Salary}</td>
       <td>{data.net_Salary}</td>
-      <td> <a href="">Download</a> </td>
+      <td> <a href="/Salary_details">View details</a> </td>
       
     </tr>
             ))}
